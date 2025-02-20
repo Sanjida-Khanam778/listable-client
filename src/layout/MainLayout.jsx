@@ -1,6 +1,5 @@
 import { Outlet } from 'react-router-dom'
 import Navbar from '../components/Navbar/Navbar'
-import { Button } from "@material-tailwind/react";
 
 const MainLayout = () => {
  

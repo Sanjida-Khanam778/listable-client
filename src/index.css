@@ -1,4 +1,40 @@
 @import "tailwindcss";
-@theme {
+/* @theme {
   --color-primary: #14B8A6  ;
-}
+} */
+
+@theme {
+  
+  /* Light Mode */
+  --color-background-light: rgb(245, 246, 250); /* Soft White with Blue Tint */
+  --color-text-light: #1f2937; /* Dark Gray - Better Contrast */
+  --color-primary-light: #14B8A6; /* Dark Blue - Bold & Professional */
+  --color-secondary-light: #14B8A6; /* Muted Teal - Calm & Elegant */
+  
+  /* Dark Mode */
+  --color-background-dark: #1e293b; /* Navy Blue - Elegant Dark Mode */
+  --color-text-dark: #e5e7eb; /* Light Gray - Softer Than Pure White */
+  --color-primary-dark: #14B8A6; /* Lighter Blue for Highlights */
+  --color-secondary-dark: #14B8A6; /* Muted Teal - Consistent Across Themes */
+   
+  }
+  [data-theme='light'] {
+    --color-background: var(--color-background-light);
+    --color-text: var(--color-text-light);
+    --color-primary: var(--color-primary-light);
+    --color-secondary: var(--color-secondary-light);
+    --color-soft: var(--color-background-light);
+  }
+  
+  [data-theme='dark'] {
+    --color-background: var(--color-background-dark);
+    --color-text: var(--color-text-dark);
+    --color-primary: var(--color-primary-dark);
+    --color-secondary: var(--color-secondary-dark);
+  }
+  
+  body {
+    background-color: var(--color-background);
+    color: var(--color-text);
+    transition: background-color 0.3s, color 0.3s;
+  }
