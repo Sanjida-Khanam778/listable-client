@@ -152,7 +152,7 @@ const Tasks = () => {
                             ></textarea>
                             <div className="flex justify-end gap-2">
                               <button
-                                className="bg-green-500 text-white px-3 py-1 rounded-lg hover:bg-green-600"
+                                className="bg-green-500 cursor-pointer text-white px-3 py-1 rounded-lg hover:bg-green-600"
                                 onClick={() =>
                                   handleSaveEdit(column, item._id, {
                                     title: item.title,
@@ -163,7 +163,7 @@ const Tasks = () => {
                                 <FaSave className="text-sm" /> Save
                               </button>
                               <button
-                                className="bg-gray-500 text-white px-3 py-1 rounded-lg hover:bg-gray-600"
+                                className="bg-gray-500 cursor-pointer text-white px-3 py-1 rounded-lg hover:bg-gray-600"
                                 onClick={() => handleEditToggle(column, item._id)}
                               >
                                 <FaTimes className="text-sm" /> Cancel
@@ -177,13 +177,13 @@ const Tasks = () => {
                               <p className="text-lg font-medium">{item.title}</p>
                               <div className="flex gap-2">
                                 <button
-                                  className="flex items-center text-white px-3 py-2 rounded-full bg-blue-500 hover:bg-blue-600"
+                                  className="flex cursor-pointer items-center px-3 py-2 rounded-full"
                                   onClick={() => handleEditToggle(column, item._id)}
                                 >
                                   <FaEdit className="text-sm" />
                                 </button>
                                 <button
-                                  className="flex items-center text-white px-3 py-2 rounded-full bg-red-500 hover:bg-red-600"
+                                  className="flex cursor-pointer items-center px-3 py-2 rounded-full"
                                   onClick={() => handleDelete(item._id, column)}
                                 >
                                   <FaTrashAlt className="text-sm" />
@@ -192,7 +192,7 @@ const Tasks = () => {
                             </div>
                             <p className="mt-2 text-sm">{item.description}</p>
                             <p className="mt-2 text-xs text-gray-500">
-                              Timestamp: {formatTimestamp(item.timestamp)}
+                              {formatTimestamp(item.timestamp)}
                             </p>
                           </div>
                         )}
