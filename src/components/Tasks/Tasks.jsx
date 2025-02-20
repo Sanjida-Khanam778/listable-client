@@ -4,11 +4,7 @@ import useAxiosPublic from "../../hooks/useAxiosPublic";
 
 const Tasks = () => {
   const axiosPublic = useAxiosPublic();
-  const [tasks, setTasks] = useState({
-    todo: [],
-    inProgress: [],
-    done: [],
-  });
+  const [tasks, setTasks] = useState({});
 
   useEffect(() => {
     axiosPublic.get("/tasks").then((res) => {
@@ -26,12 +22,12 @@ const Tasks = () => {
 
     // If no destination, exit
     if (!destination) return;
-
     const sourceColumn = source.droppableId;
     const destinationColumn = destination.droppableId;
 
     if (sourceColumn === destinationColumn) {
       const items = Array.from(tasks[sourceColumn]);
+      console.log(items)
       const [movedItem] = items.splice(source.index, 1);
       items.splice(destination.index, 0, movedItem);
 
@@ -77,7 +73,11 @@ const Tasks = () => {
               >
                 <h2 className="text-lg font-bold mb-4 capitalize">{column}</h2>
                 {items.map((item, index) => (
-                  <Draggable key={item._id} draggableId={item._id} index={index}>
+                  <Draggable
+                    key={item._id}
+                    draggableId={item._id}
+                    index={index}
+                  >
                     {(provided) => (
                       <div
                         ref={provided.innerRef}
@@ -85,7 +85,9 @@ const Tasks = () => {
                         {...provided.dragHandleProps}
                         className="p-3 border rounded-lg shadow-sm cursor-grab"
                       >
-                        {item.title}
+                        <p> {item.title}</p>
+                        <p>{item.description}</p>
+                       
                       </div>
                     )}
                   </Draggable>
