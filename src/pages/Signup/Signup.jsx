@@ -18,7 +18,7 @@ const Signup = () => {
     event.preventDefault();
     setError("");
     const form = event.target;
-    const name = form.name.value;
+    // const name = form.name.value;
     const email = form.email.value;
     const password = form.password.value;
 
@@ -40,7 +40,7 @@ const Signup = () => {
     }
 
     try {
-      const result = await createUser(email, password);
+      await createUser(email, password);
       navigate("/");
       setLoginLoading(false);
       toast.success("Signup Successful");
