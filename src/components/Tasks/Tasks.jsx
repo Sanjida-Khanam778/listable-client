@@ -4,25 +4,34 @@ import useAxiosPublic from "../../hooks/useAxiosPublic";
 
 const Tasks = () => {
   const axiosPublic = useAxiosPublic();
-  const [tasks, setTasks] = useState({});
+  const [tasks, setTasks] = useState({
+    todo: [],
+    inProgress: [],
+    done: [],
+  });
 
   useEffect(() => {
     axiosPublic.get("/tasks").then((res) => {
-      console.log(res.data);
-      setTasks(res.data);
+      const data = res.data;
+      setTasks({
+        todo: data.todo || [],
+        inProgress: data.inProgress || [],
+        done: data.done || [],
+      });
     });
-    // Assuming 'data' is an object with todo, inProgress, done
   }, [axiosPublic]);
 
   const onDragEnd = (result) => {
     const { source, destination } = result;
+
+    // If no destination, exit
     if (!destination) return;
 
     const sourceColumn = source.droppableId;
     const destinationColumn = destination.droppableId;
 
     if (sourceColumn === destinationColumn) {
-      const items = [...tasks[sourceColumn]];
+      const items = Array.from(tasks[sourceColumn]);
       const [movedItem] = items.splice(source.index, 1);
       items.splice(destination.index, 0, movedItem);
 
@@ -30,9 +39,14 @@ const Tasks = () => {
         ...prevTasks,
         [sourceColumn]: items,
       }));
+
+      axiosPublic.put(`/tasks/modify/${movedItem._id}`, {
+        category: destinationColumn,
+        order: destination.index,
+      });
     } else {
-      const sourceItems = [...tasks[sourceColumn]];
-      const destinationItems = [...tasks[destinationColumn]];
+      const sourceItems = Array.from(tasks[sourceColumn]);
+      const destinationItems = Array.from(tasks[destinationColumn]);
 
       const [movedItem] = sourceItems.splice(source.index, 1);
       destinationItems.splice(destination.index, 0, movedItem);
@@ -42,6 +56,11 @@ const Tasks = () => {
         [sourceColumn]: sourceItems,
         [destinationColumn]: destinationItems,
       }));
+
+      axiosPublic.put(`/tasks/modify/${movedItem._id}`, {
+        category: destinationColumn,
+        order: destination.index,
+      });
     }
   };
 
@@ -58,7 +77,7 @@ const Tasks = () => {
               >
                 <h2 className="text-lg font-bold mb-4 capitalize">{column}</h2>
                 {items.map((item, index) => (
-                  <Draggable key={item.id} draggableId={item.id} index={index}>
+                  <Draggable key={item._id} draggableId={item._id} index={index}>
                     {(provided) => (
                       <div
                         ref={provided.innerRef}
