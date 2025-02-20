@@ -49,7 +49,6 @@ import {
       if (Object.keys(validationErrors).length === 0) {
         const { data } = await axiosPublic.post("/task", taskData);
         console.log(data);
-        alert("Task Submitted:", { title, description });
         setTitle("");
         setDescription("");
       }
