@@ -1,14 +1,18 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
-
-const initialTasks = {
-  todo: [{ id: "1", title: "Task 1" }, { id: "2", title: "Task 2" }],
-  inProgress: [{ id: "3", title: "Task 3" }],
-  done: [{ id: "4", title: "Task 4" }],
-};
+import useAxiosPublic from "../../hooks/useAxiosPublic";
 
 const Tasks = () => {
-  const [tasks, setTasks] = useState(initialTasks);
+  const axiosPublic = useAxiosPublic();
+  const [tasks, setTasks] = useState({});
+
+  useEffect(() => {
+    axiosPublic.get("/tasks").then((res) => {
+      console.log(res.data);
+      setTasks(res.data);
+    });
+    // Assuming 'data' is an object with todo, inProgress, done
+  }, [axiosPublic]);
 
   const onDragEnd = (result) => {
     const { source, destination } = result;

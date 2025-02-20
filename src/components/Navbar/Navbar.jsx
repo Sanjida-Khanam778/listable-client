@@ -1,5 +1,4 @@
 import { Link } from "react-router";
-// import "./Navbar.css";
 
 import useAuth from "../../hooks/useAuth";
 import { useContext } from "react";
