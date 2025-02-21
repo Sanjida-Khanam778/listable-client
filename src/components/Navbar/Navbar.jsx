@@ -16,11 +16,11 @@ const Navbar = () => {
   console.log(user);
 
   return (
-    <nav className="block w-full px-4 py-2 mx-auto shadow-md rounded-md lg:px-8 lg:py-3">
+    <nav className= {`block w-full px-4 py-2 mx-auto lg:px-8 lg:py-3 shadow-sm ${theme==='dark'?'bg-background-dark':'bg-background-light'}`}>
       <div className="container flex items-center justify-between mx-auto text-slate-800">
         <a
           href="#"
-          className={`mr-4 block cormorant text-4xl cursor-pointer py-1.5 font-semibold ${
+          className={`mr-4 block cormorant  text-4xl cursor-pointer py-1.5 font-semibold ${
             theme === "dark" ? "text-white" : "text-black"
           }`}
         >

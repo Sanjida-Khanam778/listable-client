@@ -6,7 +6,11 @@ import { FaEdit, FaTrashAlt, FaSave, FaTimes } from "react-icons/fa";
 const Tasks = () => {
   const axiosPublic = useAxiosPublic();
   const [tasks, setTasks] = useState({});
-
+  const columnNames = {
+    todo: "To Do",
+    inProgress: "In Progress",
+    done: "Done",
+  };
   useEffect(() => {
     axiosPublic.get("/tasks").then((res) => {
       const data = res.data;
@@ -117,7 +121,7 @@ const Tasks = () => {
                 {...provided.droppableProps}
                 className="border rounded-lg p-4"
               >
-                <h2 className="text-lg font-bold mb-4 capitalize">{column}</h2>
+                <h2 className="text-lg font-bold mb-4 capitalize">{columnNames[column]}</h2>
                 {items.map((item, index) => (
                   <Draggable
                     key={item._id}
