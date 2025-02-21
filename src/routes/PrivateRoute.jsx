@@ -11,7 +11,6 @@ const PrivateRoute = ({ children }) => {
   if (loading) {
     return <Loader />
   }
-
   if (user && user?.email) {
     return children;
   }
@@ -20,7 +19,6 @@ const PrivateRoute = ({ children }) => {
 };
 
 export default PrivateRoute;
-
 
 PrivateRoute.propTypes={
     children: PropTypes.node

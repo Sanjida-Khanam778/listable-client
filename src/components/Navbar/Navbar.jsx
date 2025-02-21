@@ -1,12 +1,12 @@
 import { Link } from "react-router";
-
 import useAuth from "../../hooks/useAuth";
 import { useContext } from "react";
 import useDark from "../../hooks/useDark";
 import { IconButton } from "@material-tailwind/react";
 import { ThemeContext } from "../../Context/ThemeProvider";
-import { HiMoon } from "react-icons/hi";
-import { FaSun } from "react-icons/fa";
+import { TiWeatherSunny } from "react-icons/ti";
+import { FiMoon } from "react-icons/fi";
+import { PiSunBold } from "react-icons/pi";
 
 const Navbar = () => {
   const { logOut, user } = useAuth();
@@ -16,17 +16,16 @@ const Navbar = () => {
   console.log(user);
 
   return (
-  
     <nav className="block w-full px-4 py-2 mx-auto shadow-md rounded-md lg:px-8 lg:py-3">
       <div className="container flex items-center justify-between mx-auto text-slate-800">
-      <a
-  href="#"
-  className={`mr-4 block cursor-pointer py-1.5 font-semibold ${
-    theme === "dark" ? "text-white" : "text-black"
-  }`}
->
-  Listable
-</a>
+        <a
+          href="#"
+          className={`mr-4 block cormorant text-4xl cursor-pointer py-1.5 font-semibold ${
+            theme === "dark" ? "text-white" : "text-black"
+          }`}
+        >
+          Listable
+        </a>
         <div className="flex gap-5">
           <div>
             <IconButton
@@ -35,15 +34,19 @@ const Navbar = () => {
               className=" rounded-full cursor-pointer"
             >
               {theme === "light" ? (
-                <HiMoon className=" text-2xl" />
+                <FiMoon className=" text-2xl" />
               ) : (
-                <FaSun className=" text-2xl text-text-dark" />
+                <PiSunBold className=" text-2xl text-text-dark" />
               )}
             </IconButton>
           </div>
           {user && user?.email ? (
             <div className="relative group">
-              <img src={user?.photoURL} referrerPolicy="no-referrer" className="h-10 w-10 rounded-full" />
+              <img
+                src={user?.photoURL}
+                referrerPolicy="no-referrer"
+                className="h-10 w-10 rounded-full"
+              />
               <div className="absolute z-10 w-32 -bottom-8 -right-10 transform -translate-x-1/2 bg-white text-black text-sm px-3 py-1 opacity-0 group-hover:opacity-100 transition duration-300">
                 {user.displayName}
               </div>
