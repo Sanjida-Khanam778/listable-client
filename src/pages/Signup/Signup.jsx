@@ -65,7 +65,7 @@ const Signup = () => {
       const data = await axiosPublic.post(`/users`, {
         name: result?.user?.displayName,
         id: result?.user?.uid,
-        email: result?.user?.email,
+        email: result?.user?.email,   
       });
       navigate('/')
       console.log(data)
@@ -73,7 +73,7 @@ const Signup = () => {
       setLoading(false);
       toast.error(err?.message);
     }
-  };
+  };  
 
   return (
     <div className="flex justify-center items-center">
