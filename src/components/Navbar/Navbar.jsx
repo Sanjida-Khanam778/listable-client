@@ -4,7 +4,6 @@ import { useContext } from "react";
 import useDark from "../../hooks/useDark";
 import { IconButton } from "@material-tailwind/react";
 import { ThemeContext } from "../../Context/ThemeProvider";
-import { TiWeatherSunny } from "react-icons/ti";
 import { FiMoon } from "react-icons/fi";
 import { PiSunBold } from "react-icons/pi";
 
@@ -16,7 +15,7 @@ const Navbar = () => {
   console.log(user);
 
   return (
-    <nav className= {`block w-full px-4 py-2 mx-auto lg:px-8 lg:py-3 shadow-sm ${theme==='dark'?'bg-background-dark':'bg-background-light'}`}>
+    <nav className= {`block w-full px-4 py-2 mx-auto lg:px-8 lg:py-3  ${theme==='dark'?'bg-background-dark shadow-2xl':'bg-background-light shadow-sm'}`}>
       <div className="container flex items-center justify-between mx-auto text-slate-800">
         <a
           href="#"

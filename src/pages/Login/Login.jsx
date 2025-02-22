@@ -4,8 +4,11 @@ import toast from "react-hot-toast";
 import useAuth from "../../hooks/useAuth";
 import { useState } from "react";
 import { CgSpinnerAlt } from "react-icons/cg";
+import useAxiosPublic from "../../hooks/useAxiosPublic";
 
 const Login = () => {
+  const axiosPublic = useAxiosPublic();
+
   const [loginLoading, setLoginLoading] = useState(false);
   const { signIn, setUser, signInWithGoogle, loading, setLoading, user, theme } =
     useAuth();
@@ -25,6 +28,12 @@ const Login = () => {
     try {
       const res = await signIn(email, password);
       setUser(res?.user);
+      const data = await axiosPublic.post(`/users`, {
+        name: res?.user?.displayName,
+        id: res?.user?.uid,
+        email: res?.user?.email,
+      });
+      console.log(data)
       navigate("/");
       setLoginLoading(false);
       toast.success("Login Successful");
@@ -36,7 +45,15 @@ const Login = () => {
 
   const handleGoogleSignIn = async () => {
     try {
-      await signInWithGoogle();
+      const result = await signInWithGoogle();
+      console.log(result.user)
+      const data = await axiosPublic.post(`/users`, {
+        name: result?.user?.displayName,
+        id: result?.user?.uid,
+        email: result?.user?.email,
+      });
+      console.log(data)
+
       navigate("/");
       toast.success("Login Successful");
     } catch (err) {

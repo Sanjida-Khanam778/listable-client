@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import useAxiosPublic from "../../hooks/useAxiosPublic";
-import { FaEdit, FaTrashAlt, FaSave, FaTimes } from "react-icons/fa";
-import useTheme from "../../hooks/useTheme";
+import { FaSave, FaTimes } from "react-icons/fa";
+// import useTheme from "../../hooks/useTheme";
 
 const Tasks = () => {
-  const {theme} = useTheme()
+  // const {theme} = useTheme()
   const axiosPublic = useAxiosPublic();
   const [tasks, setTasks] = useState({});
 
