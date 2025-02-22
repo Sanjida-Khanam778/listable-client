@@ -2,10 +2,16 @@ import { useEffect, useState } from "react";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import useAxiosPublic from "../../hooks/useAxiosPublic";
 import { FaEdit, FaTrashAlt, FaSave, FaTimes } from "react-icons/fa";
+import useTheme from "../../hooks/useTheme";
 
 const Tasks = () => {
+  const {theme} = useTheme()
   const axiosPublic = useAxiosPublic();
   const [tasks, setTasks] = useState({});
+
+  const isOverdue = (dueDate) => {
+    return new Date(dueDate) < new Date();
+  };
 
   useEffect(() => {
     axiosPublic.get("/tasks").then((res) => {
@@ -17,30 +23,26 @@ const Tasks = () => {
       });
     });
   }, [axiosPublic]);
-  
 
   const onDragEnd = async (result) => {
     const { source, destination } = result;
-  
+
     if (!destination) return;
-  
+
     const sourceColumn = source.droppableId;
     const destinationColumn = destination.droppableId;
-  
     const movedItem = tasks[sourceColumn][source.index];
-  
+
     if (sourceColumn === destinationColumn) {
-      // Reorder within the same column
       const updatedTasks = [...tasks[sourceColumn]];
       updatedTasks.splice(source.index, 1);
       updatedTasks.splice(destination.index, 0, movedItem);
-  
+
       setTasks((prev) => ({
         ...prev,
         [sourceColumn]: updatedTasks,
       }));
-  
-      // Save new order to backend
+
       await Promise.all(
         updatedTasks.map((task, index) =>
           axiosPublic.put(`/tasks/modify/${task._id}`, {
@@ -50,23 +52,18 @@ const Tasks = () => {
         )
       );
     } else {
-      // Move between columns
       const sourceTasks = [...tasks[sourceColumn]];
       const destinationTasks = [...tasks[destinationColumn]];
-  
-      // Remove from source column
+
       const [movedItem] = sourceTasks.splice(source.index, 1);
-  
-      // Add to destination column
       destinationTasks.splice(destination.index, 0, movedItem);
-  
+
       setTasks((prev) => ({
         ...prev,
         [sourceColumn]: sourceTasks,
         [destinationColumn]: destinationTasks,
       }));
-  
-      // Save new order to backend
+
       await Promise.all([
         ...sourceTasks.map((task, index) =>
           axiosPublic.put(`/tasks/modify/${task._id}`, {
@@ -83,8 +80,6 @@ const Tasks = () => {
       ]);
     }
   };
-  
-  
 
   const handleEditToggle = (column, itemId) => {
     setTasks((prevTasks) => ({
@@ -97,11 +92,13 @@ const Tasks = () => {
 
   const handleSaveEdit = async (column, itemId, updatedTask) => {
     try {
-      await axiosPublic.put(`/tasks/${itemId}`, updatedTask); // Save to backend
+      await axiosPublic.put(`/tasks/${itemId}`, updatedTask);
       setTasks((prevTasks) => ({
         ...prevTasks,
         [column]: prevTasks[column].map((task) =>
-          task._id === itemId ? { ...task, ...updatedTask, isEditing: false } : task
+          task._id === itemId
+            ? { ...task, ...updatedTask, isEditing: false }
+            : task
         ),
       }));
     } catch (error) {
@@ -142,7 +139,7 @@ const Tasks = () => {
               <div
                 ref={provided.innerRef}
                 {...provided.droppableProps}
-                className="border rounded-lg p-4"
+                className="border rounded-md p-4"
               >
                 <h2 className="text-lg font-bold mb-4 capitalize">{column}</h2>
                 {items.map((item, index) => (
@@ -152,8 +149,11 @@ const Tasks = () => {
                         ref={provided.innerRef}
                         {...provided.draggableProps}
                         {...provided.dragHandleProps}
-                        className="p-4 border rounded-xl shadow-md mb-3"
+                        className={`p-4 border rounded-md mb-3 ${
+                          isOverdue(item.dueDate) ? "border border-red-500 " : ""
+                        } `}
                       >
+                        {/*  */}
                         {item.isEditing ? (
                           <div className="space-y-2">
                             <input
@@ -161,7 +161,7 @@ const Tasks = () => {
                               defaultValue={item.title}
                               className="w-full border px-3 py-2 rounded-lg"
                               onChange={(e) =>
-                                (item.title = e.target.value) // Update locally
+                                (item.title = e.target.value)
                               }
                             />
                             <textarea
@@ -169,7 +169,7 @@ const Tasks = () => {
                               className="w-full border px-3 py-2 rounded-lg"
                               rows="3"
                               onChange={(e) =>
-                                (item.description = e.target.value) // Update locally
+                                (item.description = e.target.value)
                               }
                             ></textarea>
                             <div className="flex justify-end gap-2">
@@ -195,23 +195,15 @@ const Tasks = () => {
                         ) : (
                           <div>
                             <div className="flex justify-between items-center">
-                              <p className="text-lg font-medium">{item.title}</p>
-                              <div className="flex gap-2">
-                                <button
-                                  className="flex cursor-pointer items-center px-3 py-2 rounded-full"
-                                  onClick={() => handleEditToggle(column, item._id)}
-                                >
-                                  <FaEdit className="text-sm" />
-                                </button>
-                                <button
-                                  className="flex cursor-pointer items-center px-3 py-2 rounded-full"
-                                  onClick={() => handleDelete(item._id, column)}
-                                >
-                                  <FaTrashAlt className="text-sm" />
-                                </button>
-                              </div>
+                              <p className={` font-medium ${
+                          isOverdue(item.dueDate) ? " w-full rounded-xs px-2 text-white bg-red-500" : "w-full px-2 text-white rounded-xs bg-primary-dark"
+                        }`}>{item.title}</p>
+                             
                             </div>
-                            <p className="mt-2 text-sm">{item.description}</p>
+                            <p className={`mt-2 text-sm `}>{item.description}</p>
+                            {/* <p className="text-xs">
+                              Due Date: {new Date(item.dueDate).toLocaleDateString()}
+                            </p> */}
                             <p className="mt-2 text-xs text-gray-500">
                               {formatTimestamp(item.timestamp)}
                             </p>

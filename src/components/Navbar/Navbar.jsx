@@ -20,7 +20,7 @@ const Navbar = () => {
       <div className="container flex items-center justify-between mx-auto text-slate-800">
         <a
           href="#"
-          className={`mr-4 block cormorant  text-4xl cursor-pointer py-1.5 font-semibold ${
+          className={`mr-4 block cormorant text-4xl cursor-pointer tracking-wide py-1.5 font-semibold ${
             theme === "dark" ? "text-white" : "text-black"
           }`}
         >
