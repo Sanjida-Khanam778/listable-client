@@ -6,62 +6,85 @@ import { FaEdit, FaTrashAlt, FaSave, FaTimes } from "react-icons/fa";
 const Tasks = () => {
   const axiosPublic = useAxiosPublic();
   const [tasks, setTasks] = useState({});
-  const columnNames = {
-    todo: "To Do",
-    inProgress: "In Progress",
-    done: "Done",
-  };
+
   useEffect(() => {
     axiosPublic.get("/tasks").then((res) => {
       const data = res.data;
       setTasks({
-        todo: data.todo || [],
-        inProgress: data.inProgress || [],
-        done: data.done || [],
+        todo: data.todo.sort((a, b) => a.order - b.order) || [],
+        inProgress: data.inProgress.sort((a, b) => a.order - b.order) || [],
+        done: data.done.sort((a, b) => a.order - b.order) || [],
       });
     });
   }, [axiosPublic]);
+  
 
-  const onDragEnd = (result) => {
+  const onDragEnd = async (result) => {
     const { source, destination } = result;
-
+  
     if (!destination) return;
+  
     const sourceColumn = source.droppableId;
     const destinationColumn = destination.droppableId;
-
+  
+    const movedItem = tasks[sourceColumn][source.index];
+  
     if (sourceColumn === destinationColumn) {
-      const items = Array.from(tasks[sourceColumn]);
-      const [movedItem] = items.splice(source.index, 1);
-      items.splice(destination.index, 0, movedItem);
-
-      setTasks((prevTasks) => ({
-        ...prevTasks,
-        [sourceColumn]: items,
+      // Reorder within the same column
+      const updatedTasks = [...tasks[sourceColumn]];
+      updatedTasks.splice(source.index, 1);
+      updatedTasks.splice(destination.index, 0, movedItem);
+  
+      setTasks((prev) => ({
+        ...prev,
+        [sourceColumn]: updatedTasks,
       }));
-
-      axiosPublic.put(`/tasks/modify/${movedItem._id}`, {
-        category: destinationColumn,
-        order: destination.index,
-      });
+  
+      // Save new order to backend
+      await Promise.all(
+        updatedTasks.map((task, index) =>
+          axiosPublic.put(`/tasks/modify/${task._id}`, {
+            category: sourceColumn,
+            order: index,
+          })
+        )
+      );
     } else {
-      const sourceItems = Array.from(tasks[sourceColumn]);
-      const destinationItems = Array.from(tasks[destinationColumn]);
-
-      const [movedItem] = sourceItems.splice(source.index, 1);
-      destinationItems.splice(destination.index, 0, movedItem);
-
-      setTasks((prevTasks) => ({
-        ...prevTasks,
-        [sourceColumn]: sourceItems,
-        [destinationColumn]: destinationItems,
+      // Move between columns
+      const sourceTasks = [...tasks[sourceColumn]];
+      const destinationTasks = [...tasks[destinationColumn]];
+  
+      // Remove from source column
+      const [movedItem] = sourceTasks.splice(source.index, 1);
+  
+      // Add to destination column
+      destinationTasks.splice(destination.index, 0, movedItem);
+  
+      setTasks((prev) => ({
+        ...prev,
+        [sourceColumn]: sourceTasks,
+        [destinationColumn]: destinationTasks,
       }));
-
-      axiosPublic.put(`/tasks/modify/${movedItem._id}`, {
-        category: destinationColumn,
-        order: destination.index,
-      });
+  
+      // Save new order to backend
+      await Promise.all([
+        ...sourceTasks.map((task, index) =>
+          axiosPublic.put(`/tasks/modify/${task._id}`, {
+            category: sourceColumn,
+            order: index,
+          })
+        ),
+        ...destinationTasks.map((task, index) =>
+          axiosPublic.put(`/tasks/modify/${task._id}`, {
+            category: destinationColumn,
+            order: index,
+          })
+        ),
+      ]);
     }
   };
+  
+  
 
   const handleEditToggle = (column, itemId) => {
     setTasks((prevTasks) => ({
@@ -89,7 +112,7 @@ const Tasks = () => {
 
   const handleDelete = async (itemId, column) => {
     try {
-      const response = await axiosPublic.delete(`/task/${itemId}`);
+      const response = await axiosPublic.delete(`/tasks/${itemId}`);
       console.log(response.data.message);
 
       setTasks((prevTasks) => ({
@@ -112,7 +135,7 @@ const Tasks = () => {
 
   return (
     <DragDropContext onDragEnd={onDragEnd}>
-      <div className="grid grid-cols-3 gap-4 p-4">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 p-4">
         {Object.entries(tasks).map(([column, items]) => (
           <Droppable key={column} droppableId={column}>
             {(provided) => (
@@ -121,13 +144,9 @@ const Tasks = () => {
                 {...provided.droppableProps}
                 className="border rounded-lg p-4"
               >
-                <h2 className="text-lg font-bold mb-4 capitalize">{columnNames[column]}</h2>
+                <h2 className="text-lg font-bold mb-4 capitalize">{column}</h2>
                 {items.map((item, index) => (
-                  <Draggable
-                    key={item._id}
-                    draggableId={item._id}
-                    index={index}
-                  >
+                  <Draggable key={item._id} draggableId={item._id} index={index}>
                     {(provided) => (
                       <div
                         ref={provided.innerRef}
@@ -136,7 +155,6 @@ const Tasks = () => {
                         className="p-4 border rounded-xl shadow-md mb-3"
                       >
                         {item.isEditing ? (
-                          // Edit Mode
                           <div className="space-y-2">
                             <input
                               type="text"
@@ -175,7 +193,6 @@ const Tasks = () => {
                             </div>
                           </div>
                         ) : (
-                          // View Mode
                           <div>
                             <div className="flex justify-between items-center">
                               <p className="text-lg font-medium">{item.title}</p>
