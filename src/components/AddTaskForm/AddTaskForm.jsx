@@ -74,7 +74,7 @@ export function AddTaskCard() {
   };
 
   return (
-    <Card className="md:w-96 mx-auto my-16">
+    <Card className="md:w-96 mx-auto mt-16 border-4 border-primary-dark">
       <Toaster/>
       <CardHeader className="mb-4 grid h-28 place-items-center bg-primary-dark">
         <Typography variant="h3" color="white">

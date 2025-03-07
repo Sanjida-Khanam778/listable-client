@@ -15,14 +15,14 @@ const Navbar = () => {
   console.log(user);
 
   return (
-    <nav className= {`block w-full px-4 py-2 mx-auto lg:px-8 lg:py-3  ${theme==='dark'?'bg-background-dark shadow-2xl':'bg-background-light shadow-sm'}`}>
+    <nav className= {`block w-full px-4 py-1 mx-auto lg:px-8  ${theme==='dark'?'bg-background-dark shadow-2xl':'bg-background-light shadow-sm'}`}>
       <div className="flex items-center justify-between mx-auto text-slate-800">
         <div className="flex gap-1 md:gap-3 items-center">
         <img className="h-7 md:h-10" src="https://i.imgur.com/MAjiXOD.png" alt="" />
         <a
           href="#"
           className={`mr-2 md:mr-4 hidden md:block cormorant text-2xl md:text-4xl cursor-pointer tracking-wide py-1.5 font-semibold ${
-            theme === "dark" ? "text-white" : "text-black"
+            theme === "dark" ? "text-primary-dark" : "text-black"
           }`}
         >
           Listable
