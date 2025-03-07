@@ -212,7 +212,7 @@ const Tasks = () => {
                               <p
                                 className={` font-medium ${
                                   isOverdue(item.dueDate)
-                                    ? " w-full text-lg rounded-xs px-2 text-white bg-red-500"
+                                    ? " w-full rounded-xs px-2 text-white bg-red-500"
                                     : "w-full px-2 text-white rounded-xs bg-primary-dark"
                                 }`}
                               >
