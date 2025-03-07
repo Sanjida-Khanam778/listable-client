@@ -207,14 +207,14 @@ const Tasks = () => {
                             </div>
                           </div>
                         ) : (
-                          <div>
+                          <div> 
                             <div className="flex justify-between items-center">
                               <p
                                 className={` font-medium ${
                                   isOverdue(item.dueDate)
                                     ? " w-full rounded-xs px-2 text-white bg-red-500"
                                     : "w-full px-2 text-white rounded-xs bg-primary-dark"
-                                }`}
+                                }`} 
                               >
                                 {item.title}
                               </p>

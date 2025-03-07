@@ -55,6 +55,6 @@ Listable is a task management web application that allows users to organize thei
 - Create, update, and delete tasks
 - Drag-and-drop task organization
 - Dark mode support
+- Due date highlighting (Overdue tasks appear in red)
 - Firebase authentication integration
-- Backend API with MongoDB database
 
