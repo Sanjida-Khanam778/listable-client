@@ -97,7 +97,7 @@ const Signup = () => {
                 name="name"
                 id="name"
                 placeholder="Enter Your Name Here"
-                className={`w-full px-3 py-2 input input-bordered rounded-md border-2 focus:outline-[#A35C7A] ${
+                className={`w-full px-3 py-2 input input-bordered rounded-md border-2 focus:outline-primary-dark ${
                   theme === "dark"
                     ? "text-white placeholder-gray-400 border-gray-600"
                     : "text-black placeholder-gray-500 border-gray-300"
@@ -113,7 +113,7 @@ const Signup = () => {
                 name="email"
                 id="email"
                 placeholder="Enter Your Email Here"
-                className={`w-full px-3 py-2 input input-bordered rounded-md border-2 focus:outline-[#A35C7A] ${
+                className={`w-full px-3 py-2 input input-bordered rounded-md border-2 focus:outline-primary-dark ${
                   theme === "dark"
                     ? "text-white placeholder-gray-400 border-gray-600"
                     : "text-black placeholder-gray-500 border-gray-300"
@@ -129,7 +129,7 @@ const Signup = () => {
                 name="password"
                 id="password"
                 placeholder="*******"
-                className={`w-full px-3 py-2 input input-bordered rounded-md border-2 focus:outline-[#A35C7A] ${
+                className={`w-full px-3 py-2 input input-bordered rounded-md border-2 focus:outline-primary-dark ${
                   theme === "dark"
                     ? "text-white placeholder-gray-400 border-gray-600"
                     : "text-black placeholder-gray-500 border-gray-300"
@@ -140,7 +140,7 @@ const Signup = () => {
           {error && <p className="text-red-500 text-sm">{error}</p>}
           <button
             type="submit"
-            className="bg-primary-dark w-full rounded-md py-3 text-white font-bold"
+            className="bg-primary-dark cursor-pointer w-full rounded-sm py-3 text-white font-bold"
           >
             {loading || loginLoading ? (
               <CgSpinnerAlt className="animate-spin m-auto" />
@@ -151,7 +151,7 @@ const Signup = () => {
         </form>
         <div
           onClick={handleGoogleSignIn}
-          className="flex justify-center items-center space-x-2 border-[#A35C7A] border my-3 p-2 rounded-lg cursor-pointer"
+          className="flex justify-center items-center space-x-2 border-primary-dark border my-3 p-2 rounded-sm cursor-pointer"
         >
           <FcGoogle size={32} />
           <p>Continue with Google</p>
@@ -160,7 +160,7 @@ const Signup = () => {
           Already have an account?{" "}
           <Link
             to="/login"
-            className="hover:underline hover:text-[#A35C7A] font-bold text-gray-600"
+            className="hover:underline hover:text-primary-dark font-bold "
           >
             Login
           </Link>

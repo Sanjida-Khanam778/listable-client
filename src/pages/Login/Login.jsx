@@ -111,7 +111,7 @@ const Login = () => {
           </>
           <button
             type="submit"
-            className="bg-primary-dark w-full rounded-md py-3 text-white font-bold"
+            className="bg-primary-dark w-full cursor-pointer rounded-sm py-3 text-white font-bold"
           >
             {loading || loginLoading ? (
               <CgSpinnerAlt className="animate-spin m-auto" />
@@ -122,7 +122,7 @@ const Login = () => {
         </form>
         <div
           onClick={handleGoogleSignIn}
-          className="flex justify-center items-center space-x-2 border-[#A35C7A] border my-3 p-2 rounded-lg cursor-pointer"
+          className="flex justify-center items-center space-x-2 border-primary-dark border my-3 p-2 rounded-sm cursor-pointer"
         >
           <FcGoogle size={32} />
           <p>Continue with Google</p>
@@ -131,7 +131,7 @@ const Login = () => {
           Don&apos;t have an account yet?{" "}
           <Link
             to="/signup"
-            className="hover:underline hover:text-[#A35C7A] font-bold text-gray-600"
+            className="hover:underline hover:text-primary-dark font-bold"
           >
             Sign up
           </Link>

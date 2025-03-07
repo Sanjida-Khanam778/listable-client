@@ -10,15 +10,21 @@ import {
 } from "@material-tailwind/react";
 import { useState } from "react";
 import useAxiosPublic from "../../hooks/useAxiosPublic";
+import toast, { Toaster } from "react-hot-toast";
+import { CgSpinnerAlt } from "react-icons/cg";
+import useAuth from "../../hooks/useAuth";
 
 export function AddTaskCard() {
+  const {user} = useAuth()
   const axiosPublic = useAxiosPublic();
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [dueDate, setDueDate] = useState("");
   const [errors, setErrors] = useState({});
+  const [loading, setLoading] = useState(false)
 
   const handleSubmit = async (e) => {
+    setLoading(true)
     e.preventDefault();
     const form = e.target;
     const title = form.title.value;
@@ -33,6 +39,7 @@ export function AddTaskCard() {
       dueDate,
       timestamp,
       category,
+      email: user?.email
     };
 
     console.log(taskData);
@@ -58,6 +65,8 @@ export function AddTaskCard() {
     if (Object.keys(validationErrors).length === 0) {
       const { data } = await axiosPublic.post("/tasks", taskData);
       console.log(data);
+      setLoading(false)
+      toast.success("Task added in todo list")
       setTitle("");
       setDescription("");
       setDueDate("");
@@ -66,6 +75,7 @@ export function AddTaskCard() {
 
   return (
     <Card className="md:w-96 mx-auto my-16">
+      <Toaster/>
       <CardHeader className="mb-4 grid h-28 place-items-center bg-primary-dark">
         <Typography variant="h3" color="white">
           Add Task
@@ -127,7 +137,11 @@ export function AddTaskCard() {
         </CardBody>
         <CardFooter className="pt-0">
           <Button className="bg-primary-light" type="submit" fullWidth>
-            Add Task
+          {loading ? (
+                <CgSpinnerAlt className="animate-spin m-auto" />
+              ) : (
+                "Add Task"
+              )}
           </Button>
         </CardFooter>
       </form>

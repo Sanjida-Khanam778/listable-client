@@ -16,16 +16,19 @@ const Navbar = () => {
 
   return (
     <nav className= {`block w-full px-4 py-2 mx-auto lg:px-8 lg:py-3  ${theme==='dark'?'bg-background-dark shadow-2xl':'bg-background-light shadow-sm'}`}>
-      <div className="container flex items-center justify-between mx-auto text-slate-800">
+      <div className="flex items-center justify-between mx-auto text-slate-800">
+        <div className="flex gap-1 md:gap-3 items-center">
+        <img className="h-7 md:h-10" src="https://i.imgur.com/MAjiXOD.png" alt="" />
         <a
           href="#"
-          className={`mr-4 block cormorant text-4xl cursor-pointer tracking-wide py-1.5 font-semibold ${
+          className={`mr-2 md:mr-4 hidden md:block cormorant text-2xl md:text-4xl cursor-pointer tracking-wide py-1.5 font-semibold ${
             theme === "dark" ? "text-white" : "text-black"
           }`}
         >
           Listable
         </a>
-        <div className="flex gap-5">
+        </div>
+        <div className="flex gap-1 md:gap-4">
           <div>
             <IconButton
               onClick={toggleTheme}
@@ -55,7 +58,7 @@ const Navbar = () => {
           )}
           {user && user.email ? (
             <button
-              className=" bg-primary-dark text-white cursor-pointer font-bold py-2 px-5 rounded-lg hover:bg-primary transition duration-300"
+              className=" bg-primary-dark text-white cursor-pointer font-bold py-2 px-5 rounded-sm hover:bg-primary transition duration-300"
               onClick={logOut}
             >
               Logout
@@ -63,13 +66,13 @@ const Navbar = () => {
           ) : (
             <>
               <Link
-                className=" bg-primary-dark text-white font-bold py-2 px-5 rounded-lg hover:bg-primary transition duration-300"
+                className=" bg-primary-dark text-white font-bold py-2 px-5 rounded-sm hover:bg-primary transition duration-300"
                 to={"/login"}
               >
                 Login
               </Link>
               <Link
-                className=" bg-primary-dark text-white font-bold py-2 px-5 rounded-lg hover:bg-primary transition duration-300"
+                className=" bg-primary-dark text-white font-bold py-2 px-5 rounded-sm hover:bg-primary transition duration-300"
                 to={"/signup"}
               >
                 Sign Up
