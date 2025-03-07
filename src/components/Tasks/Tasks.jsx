@@ -2,13 +2,11 @@ import { useEffect, useState } from "react";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import useAxiosPublic from "../../hooks/useAxiosPublic";
 import { FaEdit, FaSave, FaTimes, FaTrashAlt } from "react-icons/fa";
-import useTheme from "../../hooks/useTheme";
 import toast, { Toaster } from "react-hot-toast";
 import useAuth from "../../hooks/useAuth";
 
 const Tasks = () => {
   const [loading, setLoading] = useState(false);
-  const { theme } = useTheme();
   const axiosPublic = useAxiosPublic();
   const [tasks, setTasks] = useState({});
   const { user } = useAuth();
